@@ -1,0 +1,7 @@
+/venv/
+.idea
+db.sqlite3
+*.log
+/celerybeat-schedule.bak
+/celerybeat-schedule.dat
+/celerybeat-schedule.dir
