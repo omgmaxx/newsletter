@@ -1,47 +1,34 @@
-from rest_framework import serializers, fields
+from rest_framework import serializers
 
 from app_news.models import *
 
 
 class NewsletterSerializer(serializers.ModelSerializer):
     """Newsletter serializer for API"""
-    filter_tag = serializers.StringRelatedField(many=True)
-    filter_code = serializers.StringRelatedField(many=True)
+    filter_tag = serializers.SlugRelatedField(many=True, slug_field='name', queryset=Tag.objects.all())
+    filter_code = serializers.SlugRelatedField(many=True, slug_field='name', queryset=PhoneCode.objects.all())
 
     class Meta:
         model = Newsletter
-        fields = ['id', 'created_at', 'text', 'filter_tag', 'filter_code', 'starts_at', 'ends_at']
+        fields = '__all__'
 
 
 class ClientSerializer(serializers.ModelSerializer):
     """Newsletter serializer for API"""
+    tag = serializers.SlugRelatedField(slug_field='name', queryset=Tag.objects.all())
+    code = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
     class Meta:
         model = Client
-        fields = ['id', 'phone_number', 'code', 'tag', 'GMT']
-        read_only_fields = ('code',)
-
-
-class TagSerializer(serializers.ModelSerializer):
-    """Tag serializer for API"""
-
-    class Meta:
-        model = Tag
-        fields = ['id', 'name']
-
-
-class CodeSerializer(serializers.ModelSerializer):
-    """Phone code serializer for API"""
-
-    class Meta:
-        model = PhoneCode
-        fields = ['id', 'name']
+        fields = '__all__'
 
 
 class MessageSerializer(serializers.ModelSerializer):
     """Phone code serializer for API"""
+    client = serializers.SlugRelatedField(slug_field='phone_number', read_only=True)
+    status = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
         model = Message
-        fields = ['id', 'status', 'newsletter', 'client', 'sent']
+        fields = '__all__'
 

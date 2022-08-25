@@ -1,183 +1,123 @@
 import logging
 
-from rest_framework import viewsets
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from app_news.models import *
-from app_news.serializers import NewsletterSerializer, ClientSerializer, TagSerializer, \
-    CodeSerializer, MessageSerializer
+from app_news.serializers import NewsletterSerializer, ClientSerializer, MessageSerializer
+from app_news.services.client_viewset_create import ClientViewsetCreate
 
 logger = logging.getLogger(__name__)
 
 
 class NewsletterViewSet(viewsets.ModelViewSet):
-    """Newsletters"""
+    """
+    Newsletter viewset
+
+    Includes methods: GET, POST, PUT, DELETE
+    """
     queryset = Newsletter.objects.all()
     serializer_class = NewsletterSerializer
-    # http_method_names = ('GET', 'POST', 'UPDATE', 'DELETE',)
+    http_method_names = ('get', 'post', 'put', 'delete')
 
     def get_name(self):
-        return self.queryset.first().__class__.__name__
+        return self.queryset.model.__name__
 
+    @swagger_auto_schema(operation_summary="Getting list of newsletters", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        """Getting list of newsletters"""
         logger.info(f'{self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Creating new newsletter", operation_description=' ')
     def create(self, request, *args, **kwargs):
-        """Creating new newsletter"""
         logger.info(f'{self.name} POST')
         return super().create(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Deleting specific newsletter", operation_description=' ')
     def destroy(self, request, *args, **kwargs):
-        """Deleting specific newsletter"""
-        logger.warning(f'{self.name} DELETE')
+        logger.warning(f'{self.name} №{self.kwargs["pk"]} DELETE')
         return super().destroy(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Getting info on specific newsletter", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        """Getting info on specific newsletter"""
-        logger.info(f'{self.name} GET')
+        logger.info(f'{self.name} №{self.kwargs["pk"]} GET')
         return super().retrieve(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Updating specific newsletter", operation_description=' ')
     def update(self, request, *args, **kwargs):
-        """Updating specific newsletter"""
-        logger.info(f'{self.name} PUT')
+        logger.info(f'{self.name} №{self.kwargs["pk"]} PUT')
         return super().update(request, *args, **kwargs)
 
 
 class ClientViewSet(viewsets.ModelViewSet):
+    """
+    Clients viewset
+
+    Includes methods: GET, POST, PUT, DELETE
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    http_method_names = ('get', 'post', 'put', 'delete')
 
     def get_name(self):
-        return self.queryset.first().__class__.__name__
+        return self.queryset.model.__name__
 
+    @swagger_auto_schema(operation_summary="Getting list of client", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        """Getting list of client"""
         logger.info(f'{self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Creating new client",
+                         operation_description="Also generates object PhoneCode with "
+                                               "first 3 characters of phone-number"
+                                               "\n\n"
+                                               "GMT range is -12 to +14")
     def create(self, request, *args, **kwargs):
-        """Creating new client"""
-        logger.info(f'{self.name} POST')
-        code = request.POST['phone_number'][:3]
-        try:
-            code = int(code)
-        except ValueError:
-            logger.error(f'{code} is not numeric')
-        code_obj = PhoneCode.objects.get_or_create(name=code)[0]
-        request.POST['code'] = code_obj.id
-        return super().create(request, *args, **kwargs)
+        logger.info(f'{self.get_name()} POST')
+        code_obj = ClientViewsetCreate().execute(request.data['phone_number'])
+        # super().create()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(code_id=code_obj.id)  # added code_id
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    @swagger_auto_schema(operation_summary="Deleting specific client", operation_description=' ')
     def destroy(self, request, *args, **kwargs):
-        """Deleting specific client"""
-        logger.warning(f'{self.name} DELETE')
+        logger.warning(f'{self.get_name()} №{self.kwargs["pk"]} DELETE')
         return super().destroy(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Getting info on specific client", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        """Getting info on specific client"""
-        logger.info(f'{self.name} GET')
+        logger.info(f'{self.get_name()} №{self.kwargs["pk"]} GET')
         return super().retrieve(request, *args, **kwargs)
 
+    @swagger_auto_schema(operation_summary="Updating specific client", operation_description=' ')
     def update(self, request, *args, **kwargs):
-        """Updating specific client"""
-        logger.info(f'{self.name} PUT')
+        logger.info(f'{self.get_name()} №{self.kwargs["pk"]} PUT')
         return super().update(request, *args, **kwargs)
-
-
-# class TagViewSet(viewsets.ModelViewSet):
-#     queryset = Tag.objects.all()
-#     serializer_class = TagSerializer
-#
-#     def get_name(self):
-#         return self.queryset.first().__class__.__name__
-#
-#     def list(self, request, *args, **kwargs):
-#         """Getting list of tag"""
-#         logger.info(f'{self.get_name()} GET')
-#         return super().list(request, *args, **kwargs)
-#
-#     def create(self, request, *args, **kwargs):
-#         """Creating new tag"""
-#         logger.info(f'{self.name} POST')
-#         return super().create(request, *args, **kwargs)
-#
-#     def destroy(self, request, *args, **kwargs):
-#         """Deleting specific tag"""
-#         logger.warning(f'{self.name} DELETE')
-#         return super().destroy(request, *args, **kwargs)
-#
-#     def retrieve(self, request, *args, **kwargs):
-#         """Getting info on specific tag"""
-#         logger.info(f'{self.name} GET')
-#         return super().retrieve(request, *args, **kwargs)
-#
-#     def update(self, request, *args, **kwargs):
-#         """Updating specific tag"""
-#         logger.info(f'{self.name} PUT')
-#         return super().update(request, *args, **kwargs)
-#
-#
-# class CodeViewSet(viewsets.ModelViewSet):
-#     queryset = PhoneCode.objects.all()
-#     serializer_class = CodeSerializer
-#
-#     def get_name(self):
-#         return self.queryset.first().__class__.__name__
-#
-#     def list(self, request, *args, **kwargs):
-#         """Getting list of phone code"""
-#         logger.info(f'{self.get_name()} GET')
-#         return super().list(request, *args, **kwargs)
-#
-#     def create(self, request, *args, **kwargs):
-#         """Creating new phone code"""
-#         logger.info(f'{self.name} POST')
-#         return super().create(request, *args, **kwargs)
-#
-#     def destroy(self, request, *args, **kwargs):
-#         """Deleting specific phone code"""
-#         logger.warning(f'{self.name} DELETE')
-#         return super().destroy(request, *args, **kwargs)
-#
-#     def retrieve(self, request, *args, **kwargs):
-#         """Getting info on specific phone code"""
-#         logger.info(f'{self.name} GET')
-#         return super().retrieve(request, *args, **kwargs)
-#
-#     def update(self, request, *args, **kwargs):
-#         """Updating specific phone code"""
-#         logger.info(f'{self.name} PUT')
-#         return super().update(request, *args, **kwargs)
 
 
 class MessageViewSet(viewsets.ModelViewSet):
+    """
+    Message viewset
+
+    Includes methods: GET
+    """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    http_method_names = ('get',)
 
     def get_name(self):
-        return self.queryset.first().__class__.__name__
+        return self.queryset.model.__name__
 
+    @swagger_auto_schema(operation_summary="Getting list of message", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        """Getting list of message"""
         logger.info(f'{self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
-    def create(self, request, *args, **kwargs):
-        """Creating new message"""
-        logger.info(f'{self.name} POST')
-        return super().create(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        """Deleting specific message"""
-        logger.warning(f'{self.name} DELETE')
-        return super().destroy(request, *args, **kwargs)
-
+    @swagger_auto_schema(operation_summary="Getting info on specific message", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        """Getting info on specific message"""
-        logger.info(f'{self.name} GET')
+        logger.info(f'{self.name} №{self.kwargs["pk"]} GET')
         return super().retrieve(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        """Updating specific message"""
-        logger.info(f'{self.name} PUT')
-        return super().update(request, *args, **kwargs)

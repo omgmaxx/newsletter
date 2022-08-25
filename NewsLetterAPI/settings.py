@@ -186,15 +186,11 @@ LOGGING = {
 CELERY_BEAT_SCHEDULE = {
    'send_message_starter': {
        'task': 'send_message_starter',
-       'schedule': 9.0
+       'schedule': 15
+           # crontab(minute='*/15')
    },
 }
 
-# CELERY_TASK_ROUTES = {
-#     'NewsLetterAPI.celery.*': {
-#         'queue': 'high_priority',
-#     },
-# }
 
 CELERY_BROKER_URL = 'amqp://localhost'
 # CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
