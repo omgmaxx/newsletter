@@ -2,7 +2,7 @@ import json
 import logging
 
 import requests
-
+from configparser import ConfigParser
 from app_news.models import Message
 from app_news.services.get_tz import GetTZ
 
@@ -14,7 +14,7 @@ class SendMessageSrvc:
     Sends message ('id', 'phone_number', 'text') to SMS sending API (probe.fbrq.cloud)
 
     """
-    def _collect_args(self, msg_id: str, phone: str, text: str) -> tuple[str, dict[str], dict[str]]:
+    def _collect_args(self, msg_id: int, phone: str, text: str) -> tuple[str, dict[str], dict[str]]:
         """
         Collects arguments to send it to API
 
@@ -23,20 +23,21 @@ class SendMessageSrvc:
         :param text: Newsletter text
         :return: url, data
         """
-        url = f'https://probe.fbrq.cloud/v1/send/{msg_id}'
+        config = ConfigParser()
+        config.read('config.ini')
+
+        url = config.get('sending_API', 'url') + str(msg_id)
         phone = ''.join(('+7', phone))
         data = {
             "id": msg_id,
             "phone": phone,
             "text": text,
         }
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' \
-                '.eyJleHAiOjE2OTI3OTEzMjQsImlzcyI6ImZhYnJpcXVlIiwibmFtZSI6Ik9tZ2dtYXgifQ' \
-                '.LsoaZfFj7UBLe4uRcHofB6mkqF50iW1D5d8aBsCt6VY '
+        token = config.get('sending_API', 'token')
         headers = {'Authorization': f'Bearer {token}'}
         return url, data, headers
 
-    def _send_message(self, url: str, data: dict[str], msg_id: str, headers: dict[str]) -> None:
+    def _send_message(self, url: str, data: dict[str], msg_id: int, headers: dict[str]) -> None:
         """
         Sends request to API
 
@@ -52,7 +53,7 @@ class SendMessageSrvc:
             logger.error(f'{data} sending has failed (code: {response.status_code})')
             self._failed_result(msg_id)
 
-    def _save_result(self, msg_id: str) -> None:
+    def _save_result(self, msg_id: int) -> None:
         """
         Changes message status to "sent" and saves current datetime
 
@@ -65,7 +66,7 @@ class SendMessageSrvc:
         message.save(update_fields=["status", "sent"])
         logger.info(f'{message} (status: {message.status}) is saved successfully')
 
-    def _failed_result(self, msg_id: str) -> None:
+    def _failed_result(self, msg_id: int) -> None:
         """
         Changes message status to "failed" and saves current datetime
 
@@ -76,7 +77,7 @@ class SendMessageSrvc:
         message.save(update_fields=["status"])
         logger.info(f'{message} (status: {message.status}) is saved successfully')
 
-    def execute(self, msg_id: str, phone: str, text: str) -> None:
+    def execute(self, msg_id: int, phone: str, text: str) -> None:
         """
         Executes sequence
 

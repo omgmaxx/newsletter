@@ -184,13 +184,15 @@ LOGGING = {
 # celery
 
 CELERY_BEAT_SCHEDULE = {
-   'send_message_starter': {
-       'task': 'send_message_starter',
-       'schedule': 15
-           # crontab(minute='*/15')
-   },
+    'send_message_starter': {
+        'task': 'send_message_starter',
+        'schedule': 60
+        # crontab(minute='*/15')
+    },
 }
 
 
 CELERY_BROKER_URL = 'amqp://localhost'
 # CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
+CELERY_IMPORTS = ("app_news.tasks.send_message",
+                  "app_news.tasks.send_message_starter",)

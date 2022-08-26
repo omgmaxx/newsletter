@@ -2,7 +2,7 @@ import logging
 
 from app_news.models import Newsletter, Client, Message
 from app_news.services.get_tz import GetTZ
-from app_news.tasks import send_message
+from app_news.tasks.send_message import send_message
 
 
 logger = logging.getLogger(__name__)

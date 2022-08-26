@@ -1,0 +1,23 @@
+[
+{
+    "model": "app_news.status",
+    "pk": 1,
+    "fields": {
+        "name": "in process"
+    }
+},
+{
+    "model": "app_news.status",
+    "pk": 2,
+    "fields": {
+        "name": "sent"
+    }
+},
+{
+    "model": "app_news.status",
+    "pk": 3,
+    "fields": {
+        "name": "failed"
+    }
+}
+]
