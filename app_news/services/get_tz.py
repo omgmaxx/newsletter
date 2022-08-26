@@ -1,22 +1,24 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from typing import Optional
 
-import pytz
+from django.utils import timezone
 
 
 class GetTZ:
     """
     Gets curent GMT time
     """
-    def _get_tz(self) -> datetime:
+
+    def _get_tz(self, gmt_delta: int) -> datetime:
         """
         Gets curent GMT time
 
         :return: Datetime
         """
-        local_tz = pytz.timezone('Europe/London')
-        cur_dt = local_tz.localize(datetime.now()).astimezone(pytz.UTC)
+        utc = timezone.now()
+        cur_dt = utc + timedelta(hours=gmt_delta)
         return cur_dt
 
-    def execute(self) -> datetime:
+    def execute(self, gmt_delta: Optional[int] = 3) -> datetime:
         """Executes sequence"""
-        return self._get_tz()
+        return self._get_tz(gmt_delta)

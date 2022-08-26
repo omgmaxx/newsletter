@@ -9,11 +9,12 @@ class ClientViewsetCreate:
     """
     Gets phone code from given phone number
     """
+
     def _generate_phone_code(self, phone_number: str) -> PhoneCode:
         """
         Gets phone code from given phone number
 
-        :param request:
+        :param phone_number: Client's phone number
         :return: PhoneCode object
         """
         code = phone_number[:3]

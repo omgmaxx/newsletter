@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.validators import MinLengthValidator
+from django.db import models
 
 from app_news.validators import validate_gmt, validate_phone_number
 
@@ -51,6 +51,8 @@ class Newsletter(models.Model):
     filter_code = models.ManyToManyField(PhoneCode, related_name='newsletter', verbose_name='code filter', blank=True)
     starts_at = models.DateTimeField(verbose_name='starts at')
     ends_at = models.DateTimeField(verbose_name='ends at', null=True, blank=True)
+    daily_start = models.TimeField(verbose_name='daily start', null=True, blank=True)
+    daily_end = models.TimeField(verbose_name='daily end', null=True, blank=True)
 
     class Meta:
         db_table = 'Newsletter'

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+from configparser import ConfigParser
 from datetime import timedelta
 from pathlib import Path
 
@@ -17,7 +18,6 @@ from pathlib import Path
 from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -29,7 +29,6 @@ SECRET_KEY = 'django-insecure-d4rsywbpp*o1li#sxczg7y3z0&knc)+!!-y!p(80qf9b(1$!ia
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -76,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'NewsLetterAPI.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -86,7 +84,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -106,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -118,7 +114,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -128,7 +123,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # DRF
 
@@ -143,18 +137,21 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # Logging
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-            'simple': {
-                '()': 'colorlog.ColoredFormatter',  # colored output
-                'format': '{log_color}[{levelname}] {message}',
-                'style': '{',
-            },
+        'simple': {
+            'format': '[{levelname}][{asctime}] {message}',
+            'style': '{',
+        },
+        'colored': {
+            '()': 'colorlog.ColoredFormatter',  # colored output
+            'format': '{log_color}[{levelname}] {message}',
+            'style': '{',
+        },
     },
     'handlers': {
         'file': {
@@ -163,10 +160,17 @@ LOGGING = {
             'formatter': 'simple',
             'encoding': 'UTF-8',
         },
+        'file_errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'simple',
+            'encoding': 'UTF-8',
+        },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'colored',
         },
     },
     'loggers': {
@@ -174,7 +178,8 @@ LOGGING = {
             'level': 'INFO',
             'handlers': [
                 'console',
-                'file'
+                'file',
+                'file_errors'
             ],
             'propagate': True,
         }
@@ -183,16 +188,16 @@ LOGGING = {
 
 # celery
 
+config = ConfigParser()
+config.read('config.ini')
+
 CELERY_BEAT_SCHEDULE = {
     'send_message_starter': {
         'task': 'send_message_starter',
-        'schedule': 60
-        # crontab(minute='*/15')
+        'schedule': crontab(minute=f'*/{config.get("backend", "period")}')
     },
 }
 
-
 CELERY_BROKER_URL = 'amqp://localhost'
-# CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
 CELERY_IMPORTS = ("app_news.tasks.send_message",
                   "app_news.tasks.send_message_starter",)

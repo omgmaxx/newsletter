@@ -26,27 +26,27 @@ class NewsletterViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(operation_summary="Getting list of newsletters", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} GET')
+        logger.info(f'[API] {self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Creating new newsletter", operation_description=' ')
     def create(self, request, *args, **kwargs):
-        logger.info(f'{self.name} POST')
+        logger.info(f'[API] {self.get_name()} POST')
         return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Deleting specific newsletter", operation_description=' ')
     def destroy(self, request, *args, **kwargs):
-        logger.warning(f'{self.name} №{self.kwargs["pk"]} DELETE')
+        logger.warning(f'[API][Newsletter: {self.get_object().id}] DELETE')
         return super().destroy(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Getting info on specific newsletter", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        logger.info(f'{self.name} №{self.kwargs["pk"]} GET')
+        logger.info(f'[API][Newsletter: {self.get_object().id}] GET')
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Updating specific newsletter", operation_description=' ')
     def update(self, request, *args, **kwargs):
-        logger.info(f'{self.name} №{self.kwargs["pk"]} PUT')
+        logger.info(f'[API][Newsletter: {self.get_object().id}] PUT {list(request.data)}')
         return super().update(request, *args, **kwargs)
 
 
@@ -65,7 +65,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(operation_summary="Getting list of client", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} GET')
+        logger.info(f'[API] {self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Creating new client",
@@ -74,7 +74,7 @@ class ClientViewSet(viewsets.ModelViewSet):
                                                "\n\n"
                                                "GMT range is -12 to +14")
     def create(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} POST')
+        logger.info(f'[API] {self.get_name()} POST')
         code_obj = ClientViewsetCreate().execute(request.data['phone_number'])
         # super().create()
         serializer = self.get_serializer(data=request.data)
@@ -85,17 +85,17 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(operation_summary="Deleting specific client", operation_description=' ')
     def destroy(self, request, *args, **kwargs):
-        logger.warning(f'{self.get_name()} №{self.kwargs["pk"]} DELETE')
+        logger.warning(f'[API][Client: {self.get_object().id}] DELETE')
         return super().destroy(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Getting info on specific client", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} №{self.kwargs["pk"]} GET')
+        logger.info(f'[API][Client: {self.get_object().id}] GET')
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Updating specific client", operation_description=' ')
     def update(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} №{self.kwargs["pk"]} PUT')
+        logger.info(f'[API][Client: {self.get_object().id}] PUT {list(request.data)}')
         return super().update(request, *args, **kwargs)
 
 
@@ -114,10 +114,10 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(operation_summary="Getting list of message", operation_description=' ')
     def list(self, request, *args, **kwargs):
-        logger.info(f'{self.get_name()} GET')
+        logger.info(f'[API] {self.get_name()} GET')
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(operation_summary="Getting info on specific message", operation_description=' ')
     def retrieve(self, request, *args, **kwargs):
-        logger.info(f'{self.name} №{self.kwargs["pk"]} GET')
+        logger.info(f'[API][Message: {self.get_object().id}] GET')
         return super().retrieve(request, *args, **kwargs)

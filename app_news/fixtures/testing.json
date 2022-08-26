@@ -1,0 +1,288 @@
+[
+{
+    "model": "app_news.newsletter",
+    "pk": 2,
+    "fields": {
+        "created_at": "2022-08-24T12:59:52.538Z",
+        "text": "kekekekekekk",
+        "starts_at": "2022-08-24T15:59:00Z",
+        "ends_at": "2022-08-25T15:59:00Z",
+        "filter_tag": [
+            1
+        ],
+        "filter_code": [
+            1
+        ]
+    }
+},
+{
+    "model": "app_news.newsletter",
+    "pk": 3,
+    "fields": {
+        "created_at": "2022-08-25T14:24:22.516Z",
+        "text": "stringstringstringstringstringstringstringstringstringstringstring",
+        "starts_at": "2022-08-25T14:21:53.738Z",
+        "ends_at": "2022-09-25T14:21:53.738Z",
+        "filter_tag": [
+            1
+        ],
+        "filter_code": [
+            5
+        ]
+    }
+},
+{
+    "model": "app_news.newsletter",
+    "pk": 4,
+    "fields": {
+        "created_at": "2022-08-26T02:07:44.713Z",
+        "text": "123123",
+        "starts_at": "2022-08-24T05:07:00Z",
+        "ends_at": "2022-09-02T05:07:00Z",
+        "filter_tag": [
+            1
+        ],
+        "filter_code": [
+            5,
+            6,
+            7
+        ]
+    }
+},
+{
+    "model": "app_news.newsletter",
+    "pk": 5,
+    "fields": {
+        "created_at": "2022-08-26T10:57:56.482Z",
+        "text": "qwe12e312eq",
+        "starts_at": "2022-08-26T13:57:00Z",
+        "ends_at": "2022-09-11T13:57:00Z",
+        "filter_tag": [
+            3,
+            4,
+            5
+        ],
+        "filter_code": [
+            5,
+            6,
+            7
+        ]
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 4,
+    "fields": {
+        "phone_number": "1231231223",
+        "code": 1,
+        "tag": 1,
+        "GMT": 12
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 5,
+    "fields": {
+        "phone_number": "0000000000",
+        "code": 1,
+        "tag": 1,
+        "GMT": 2
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 6,
+    "fields": {
+        "phone_number": "1230003210",
+        "code": 1,
+        "tag": 1,
+        "GMT": -1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 7,
+    "fields": {
+        "phone_number": "1230029999",
+        "code": 3,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 8,
+    "fields": {
+        "phone_number": "1230029992",
+        "code": 3,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 9,
+    "fields": {
+        "phone_number": "1530029992",
+        "code": 4,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 10,
+    "fields": {
+        "phone_number": "9119150177",
+        "code": 5,
+        "tag": 1,
+        "GMT": 4
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 11,
+    "fields": {
+        "phone_number": "4214123121",
+        "code": 6,
+        "tag": 1,
+        "GMT": 5
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 12,
+    "fields": {
+        "phone_number": "9114123121",
+        "code": 5,
+        "tag": 1,
+        "GMT": 5
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 13,
+    "fields": {
+        "phone_number": "8004123121",
+        "code": 1,
+        "tag": 1,
+        "GMT": 5
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 14,
+    "fields": {
+        "phone_number": "3333333333",
+        "code": 7,
+        "tag": 1,
+        "GMT": 7
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 16,
+    "fields": {
+        "phone_number": "9119999994",
+        "code": 5,
+        "tag": 1,
+        "GMT": 9
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 17,
+    "fields": {
+        "phone_number": "7779996665",
+        "code": 8,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 18,
+    "fields": {
+        "phone_number": "8009996665",
+        "code": 1,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 19,
+    "fields": {
+        "phone_number": "8009196665",
+        "code": 1,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.client",
+    "pk": 20,
+    "fields": {
+        "phone_number": "8009193365",
+        "code": 1,
+        "tag": 1,
+        "GMT": 1
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 1,
+    "fields": {
+        "name": "800"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 2,
+    "fields": {
+        "name": "0"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 3,
+    "fields": {
+        "name": "123"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 4,
+    "fields": {
+        "name": "153"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 5,
+    "fields": {
+        "name": "911"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 6,
+    "fields": {
+        "name": "421"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 7,
+    "fields": {
+        "name": "333"
+    }
+},
+{
+    "model": "app_news.phonecode",
+    "pk": 8,
+    "fields": {
+        "name": "777"
+    }
+}
+]

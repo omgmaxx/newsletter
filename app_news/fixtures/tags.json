@@ -1,0 +1,37 @@
+[
+{
+    "model": "app_news.tag",
+    "pk": 1,
+    "fields": {
+        "name": "Worker"
+    }
+},
+{
+    "model": "app_news.tag",
+    "pk": 2,
+    "fields": {
+        "name": "Student"
+    }
+},
+{
+    "model": "app_news.tag",
+    "pk": 3,
+    "fields": {
+        "name": "Child"
+    }
+},
+{
+    "model": "app_news.tag",
+    "pk": 4,
+    "fields": {
+        "name": "Not-resident"
+    }
+},
+{
+    "model": "app_news.tag",
+    "pk": 5,
+    "fields": {
+        "name": "Elder"
+    }
+}
+]
