@@ -8,6 +8,7 @@
 - RabbitMQ (https://www.rabbitmq.com/download.html)
 - Erlang (https://erlang.org/download/otp_versions_tree.html)
 - Python > 3.10.4 (https://www.python.org/downloads/)
+- Used windows10 + cygwin + bash
 
 ### Configurations
 
@@ -80,7 +81,7 @@ celery -A NewsLetterAPI worker -l info -P gevent
 6) Admin UI по ссылке /admin/
 7)  
 8)  
-9) Message переводится в статус failed и повторяется при каждом цикле
+9) При ошибке Message переводится в статус failed и повторяется при каждом цикле
 10) 
 11) Клиентам отправляется рассылка с учётом локального времени (основываясь на указанном GMT) в период, указанный в рассылке
 12) Логирование API и бэкэнда рассылки (debug.log, error.log и консоль)
